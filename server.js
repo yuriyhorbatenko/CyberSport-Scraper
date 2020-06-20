@@ -6,9 +6,8 @@ var exphbs = require("express-handlebars");
 
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://user:password1@ds117806.mlab.com:17806/heroku_h5mmfc6b";
 
-var PORT = 8080;
+var PORT = process.env.PORT || 8080;
 var app = express();
-
 
 app.use(express.static("public"));
 app.use(logger("dev"));
