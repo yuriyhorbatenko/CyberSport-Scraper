@@ -4,6 +4,8 @@ var logger = require("morgan");
 var mongoose = require("mongoose");
 var exphbs = require("express-handlebars");
 
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://user:password1@ds117806.mlab.com:17806/heroku_h5mmfc6b";
+
 var PORT = 8080;
 var app = express();
 
@@ -16,11 +18,9 @@ app.use(express.json());
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-mongoose.connect("mongodb://localhost/cyber-sport-scraper", { useNewUrlParser: true });
+mongoose.connect(MONGODB_URI);
 
 var routes = require("./routes/routes.js");
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
-mongoose.connect(MONGODB_URI);
 
 app.use(routes);
 
