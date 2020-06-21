@@ -1,0 +1,33 @@
+body {
+    position: relative;
+    margin: 0;
+    height: 100vh;
+    background-color: black;
+}
+
+.jumbotron {
+    background-color: black;
+    background-image: url(../img/7.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    color: white;
+    height: 370px;
+    padding: 10px;
+}
+
+.jumbotron h1 {
+    text-align: center;
+    font-weight: 900;
+    
+}
+
+#wrapper {
+    color: white;
+}
+
+#buttons {
+    display: flex;
+    justify-content: center;
+}
+
