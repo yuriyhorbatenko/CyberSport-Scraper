@@ -3,52 +3,23 @@
     <h1 class="display-4">Get Last eSports News</h1>
 
     <div id="buttons">
-        <a class="btn btn-primary btn-lg" href="#" role="button">DOTA2 News</a>
-        <a class="btn btn-primary btn-lg" href="#" role="button">CS:GO News</a>
-        <a class="btn btn-primary btn-lg" href="#" role="button">Clear Everything</a>
+        <a class="btn btn-primary btn-lg scrape-btn" role="button">Search Now</a>
+        <a href="/favorites" class="btn btn-primary btn-lg saved-btn" role="button">Favorites</a>
     </div>
 
 </div>
 
 
-{{#each menu}}
-{{#unless devoured}}
-{{> menu/menu-devour devoured=false}}
-{{/unless}}
-{{/each}}
+<section>
+
+    {{#each articles}}
+    {{#unless saved}}
+    {{> articles/articles}}
+    {{/unless}}
+    {{/each}}
+
+</section>
 
 
-<div id="wrapper">
-    <h1>Note Scraper</h1>
-    <h2><i>If you can do this...the homework should be no problem.</i></h2>
-    <div id="images"></div>
-    <div id="articles"></div>
-    <div id="notes"></div>
-</div>
-
-
-
-
-
-
-
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
+{{> modals/scrape-modal}}
+{{> modals/saved-modal}}

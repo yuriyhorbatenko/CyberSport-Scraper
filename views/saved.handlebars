@@ -1,0 +1,24 @@
+<div class="jumbotron">
+
+    <h1 class="display-4">Favorites Articles</h1>
+
+    <div id="buttons">
+        <a href="/" class="btn btn-primary btn-lg back-btn" role="button">Go Back</a>
+    </div>
+
+</div>
+
+
+<section>
+
+    {{#each articles}}
+    {{#if saved}}
+    {{> articles/saved-articles}}
+    {{/if}}
+    {{/each}}
+
+</section>
+
+
+{{> modals/note-modal}}
+{{> modals/unsave-modal}}

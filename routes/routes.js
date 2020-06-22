@@ -6,51 +6,90 @@ var db = require("../models");
 
 
 router.get("/", function (req, res) {
-    res.render("index");
+
+    db.Article.find({}).limit(10)
+        .then(function (scrapedArticles) {
+            var hbsObject = { articles: scrapedArticles };
+            // console.log(hbsObject);
+            res.render("index", hbsObject);
+        });
 });
 
 
 router.get("/scrape", function (req, res) {
 
-    axios.get("https://dotesports.com/dota-2").then(function (response) {
+    axios.get("https://dotesports.com").then(function (response) {
 
         var $ = cheerio.load(response.data);
 
         $("article.post").each(function (i, element) {
 
             var result = {};
+
             result.title = $(element).find("h3").text().trim();
             result.link = $(element).find("a").attr("href");
             result.image = $(element).find("a").find("img").attr("src");
+            result.date = $(element).find("time").attr("datetime");
 
             db.Article.create(result)
                 .then(function (dbArticle) {
-                    console.log(dbArticle);
+                    // console.log(dbArticle);
                 })
                 .catch(function (err) {
                     console.log(err);
                 });
         });
 
-        res.send("Scrape Complete");
-
+        $("#numArticles").text(response.count);
+        console.log("Scrape Complete");
     });
 });
 
 
-router.get("/articles", function (req, res) {
+router.get("/favorites", function (req, res) {
 
-    db.Article.find({})
-        .then(function (dbArticle) {
-            res.json(dbArticle);
-        })
-        .catch(function (err) {
-            res.json(err);
+    db.Article.find({}).limit(100)
+        .then(function (savedArticles) {
+            var hbsObject = { articles: savedArticles };
+            // console.log(hbsObject);
+            res.render("saved", hbsObject);
         });
 });
 
 
-router.get("/articles/:id", function (req, res) {
+router.put("/save/:id", function (req, res) {
+
+    db.Article.update(
+        { _id: req.params.id },
+        { saved: true }
+    )
+        .then(function (result) {
+            res.json(result);
+        })
+        .catch(function (error) {
+
+            res.json(error);
+        });
+});
+
+
+router.put("/unsave/:id", function (req, res) {
+
+    db.Article.update(
+        { _id: req.params.id },
+        { saved: false }
+    )
+        .then(function (result) {
+            res.json(result);
+        })
+        .catch(function (error) {
+
+            res.json(error);
+        });
+});
+
+
+router.get("/find-note/:id", function (req, res) {
 
     db.Article.findOne({ _id: req.params.id })
         .populate("note")
@@ -63,23 +102,8 @@ router.get("/articles/:id", function (req, res) {
 });
 
 
-router.get("/delete", function (req, res) {
-
-    db.Article.remove({})
-        .catch(function (err) {
-            res.json(err);
-        });
-
-    db.Note.remove({})
-        .catch(function (err) {
-            res.json(err);
-        });
-
-});
-
-
-router.post("/articles/:id", function (req, res) {
-
+router.post("/create-note", function (req, res) {
+    console.log("///-----------------" + req.body + "------------------///")
     db.Note.create(req.body)
         .then(function (dbNote) {
             return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
@@ -89,6 +113,29 @@ router.post("/articles/:id", function (req, res) {
         })
         .catch(function (err) {
             res.json(err);
+        });
+
+});
+
+
+router.post("/update-note/:id", function (req, res) {
+    db.Note.findOne({ _id: req.params.id })
+        .then(function (result) {
+            res.json(result);
+        })
+        .catch(function (error) {
+            res.json(error);
+        });
+});
+
+
+router.delete("/delete-note/:id", function (req, res) {
+    db.Note.remove({ _id: req.params.id })
+        .then(function (dbNote) {
+            res.json(dbNote);
+        })
+        .catch(function (error) {
+            res.json(error);
         });
 });
 

@@ -31,3 +31,11 @@ body {
     justify-content: center;
 }
 
+#listing {
+    background-color: red;
+}
+
+.current-Image {
+    height: 200px;
+}
+

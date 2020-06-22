@@ -3,6 +3,8 @@ var express = require("express");
 var logger = require("morgan");
 var mongoose = require("mongoose");
 var exphbs = require("express-handlebars");
+const Handlebars = require('handlebars')
+const { allowInsecurePrototypeAccess } = require('@handlebars/allow-prototype-access')
 
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://user:password1@ds117806.mlab.com:17806/heroku_h5mmfc6b";
 
@@ -14,7 +16,10 @@ app.use(logger("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.engine('handlebars', exphbs({
+  handlebars: allowInsecurePrototypeAccess(Handlebars)
+}));
+
 app.set("view engine", "handlebars");
 
 mongoose.connect(MONGODB_URI);
