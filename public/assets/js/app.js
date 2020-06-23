@@ -51,6 +51,7 @@ $(".remove-article-btn").on("click", function () {
 
 
 $(".note-article-btn").on("click", function () {
+  $(".noteArea").empty()
 
   event.preventDefault();
   var id = $(this).attr("data-id");
@@ -59,22 +60,19 @@ $(".note-article-btn").on("click", function () {
     method: "GET"
   })
     .then(function (data) {
+      console.log(data)
       $("#note-modal").modal("toggle");
       $(".modal-title").html(data.title);
       $(".saveNoteBtn").attr("data-id", id);
 
 
-      for (i = 0; i < data.note.length; i++) {
-        $(".noteArea").append(
-          "<div class='card-body notecard' id='notecard'>" +
-          "<h4 class='notecardTitle' data-id='" + data.note[i]._id + "'>" +
-          data.note[i].title +
-          "</h4>" +
-          "<button type='button' class='btn btn-danger deleteNote' data-id='" + data.note[i]._id + "'>Delete</button>" +
-          "</div>"
-        );
 
-      }
+      $(".noteArea").append(
+        "<div class='card-body notecard' id='notecard'>" +
+        "<div class='notecardTitle' data-id='" + data.note._id + "'>" + data.note.title + "</div>" + "<br>" +
+        "<div class='notecardBody'>" + data.note.body + "</div>" +
+        "<button type='button' class='btn btn-danger deleteNote' data-id='" + data.note._id + "'>Delete</button>" + "</div>"
+      );
 
     });
 });
@@ -86,7 +84,7 @@ $(".saveNoteBtn").on("click", function () {
   event.preventDefault();
   var id = $(this).attr("data-id");
 
-  $.ajax("/update-note/" + id, {
+  $.ajax("/create-note/" + id, {
     method: "POST",
     data: {
       title: $("#titleinput").val(),
@@ -101,23 +99,7 @@ $(".saveNoteBtn").on("click", function () {
 });
 
 
-$(".notecardTitle").on("click", function () {
-
-  event.preventDefault();
-  var id = $(this).attr("data-id");
-
-  $.ajax("/create-note/" + id, {
-    method: "POST",
-    data: {
-      title: $("#titleinput").val(),
-      body: $("#bodyinput").val()
-    }
-  })
-  console.log("-----------------" + data + "------------------")
-});
-
-
-$(".deleteNote").on("click", function () {
+$(document).on("click", ".deleteNote", function () {
 
   event.preventDefault();
   var id = $(this).attr("data-id");

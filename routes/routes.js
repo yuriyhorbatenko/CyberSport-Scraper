@@ -94,6 +94,7 @@ router.get("/find-note/:id", function (req, res) {
     db.Article.findOne({ _id: req.params.id })
         .populate("note")
         .then(function (dbArticle) {
+            console.log(dbArticle)
             res.json(dbArticle);
         })
         .catch(function (err) {
@@ -102,8 +103,8 @@ router.get("/find-note/:id", function (req, res) {
 });
 
 
-router.post("/create-note", function (req, res) {
-    console.log("///-----------------" + req.body + "------------------///")
+router.post("/create-note/:id", function (req, res) {
+
     db.Note.create(req.body)
         .then(function (dbNote) {
             return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
@@ -119,7 +120,7 @@ router.post("/create-note", function (req, res) {
 
 
 router.post("/update-note/:id", function (req, res) {
-    db.Note.findOne({ _id: req.params.id })
+    db.Note.findOneAndUpdate({ _id: req.params.id }, { title: req.body.title, body: req.body.body }, { new: true })
         .then(function (result) {
             res.json(result);
         })
