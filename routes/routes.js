@@ -7,10 +7,9 @@ var db = require("../models");
 
 router.get("/", function (req, res) {
 
-    db.Article.find({}).limit(10)
+    db.Article.find({}).limit(100)
         .then(function (scrapedArticles) {
             var hbsObject = { articles: scrapedArticles };
-            // console.log(hbsObject);
             res.render("index", hbsObject);
         });
 });
@@ -29,11 +28,14 @@ router.get("/scrape", function (req, res) {
             result.title = $(element).find("h3").text().trim();
             result.link = $(element).find("a").attr("href");
             result.image = $(element).find("a").find("img").attr("src");
-            result.date = $(element).find("time").attr("datetime");
+
+            let rawTime = $(element).find("time").attr("datetime");
+            let newTime = new Date(Date.parse(rawTime));
+
+            result.date = newTime;
 
             db.Article.create(result)
                 .then(function (dbArticle) {
-                    // console.log(dbArticle);
                 })
                 .catch(function (err) {
                     console.log(err);
@@ -51,7 +53,6 @@ router.get("/favorites", function (req, res) {
     db.Article.find({}).limit(100)
         .then(function (savedArticles) {
             var hbsObject = { articles: savedArticles };
-            // console.log(hbsObject);
             res.render("saved", hbsObject);
         });
 });

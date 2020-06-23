@@ -60,12 +60,10 @@ $(".note-article-btn").on("click", function () {
     method: "GET"
   })
     .then(function (data) {
-      console.log(data)
+
       $("#note-modal").modal("toggle");
       $(".modal-title").html(data.title);
       $(".saveNoteBtn").attr("data-id", id);
-
-
 
       $(".noteArea").append(
         "<div class='card-body notecard' id='notecard'>" +
@@ -108,4 +106,5 @@ $(document).on("click", ".deleteNote", function () {
     method: "DELETE",
   })
   window.location.href = "/favorites";
+
 });

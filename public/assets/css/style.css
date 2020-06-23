@@ -2,6 +2,7 @@ body {
     position: relative;
     margin: 0;
     height: 100vh;
+    
     background-color: black;
 }
 
@@ -36,6 +37,32 @@ body {
 }
 
 .current-Image {
-    height: 200px;
+    height: 250px;
 }
 
+.current-date {
+    color: white;
+}
+
+a:link {
+    text-decoration: none;
+    
+}
+
+.current-title {
+    font-size: 25px;
+    
+}
+
+#news {
+    margin: 50px;
+    text-align: center;
+    width: 900px;
+    background-color: rgba(255, 255, 255, 0.055);
+    
+}
+
+section {
+    display: grid;
+    justify-items: center;
+}
